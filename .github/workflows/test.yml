@@ -1,0 +1,34 @@
+name: Run tests
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version:
+          - '0.6'
+          - '1.0'
+          - '1.1'
+          - '1.2'
+          - '1.3'
+          - '1.4'
+          - '1.5'
+          - '^1.6.0-0'
+          - 'nightly'
+        julia-arch:
+          - 'x64'
+        os:
+          #- ubuntu-latest
+          - macOS-latest
+          # - windows-latest
+    steps:
+      - uses: actions/checkout@v1.0.0
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.julia-version }}
+      - name: Run tests
+        run: julia --color=yes -e 'using Profile; @profile sleep(1); Profile.clear(); @profile sleep(1); Profile.print(); Profile.print(C=true)'
