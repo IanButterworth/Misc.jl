@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         julia-version:
-          - '0.6'
           - '1.0'
           - '1.1'
           - '1.2'
@@ -33,6 +32,8 @@ jobs:
       - name: Run tests
         shell: julia --color=yes {0}
         run: |
+          using InteractiveUtils
+          versioninfo()
           using Profile
           @profile sleep(1)
           Profile.clear()
