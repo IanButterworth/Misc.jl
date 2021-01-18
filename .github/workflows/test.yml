@@ -31,4 +31,12 @@ jobs:
         with:
           version: ${{ matrix.julia-version }}
       - name: Run tests
-        run: julia --color=yes -e 'using Profile; @profile sleep(1); Profile.clear(); @profile sleep(1); Profile.print(); Profile.print(C=true)'
+        shell: julia --color=yes {0}
+        run: |
+          using Profile
+          @profile sleep(1)
+          Profile.clear()
+          @profile sleep(1)
+          Profile.print()
+          println("----")
+          Profile.print(C=true)
